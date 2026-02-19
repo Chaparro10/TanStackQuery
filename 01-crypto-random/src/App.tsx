@@ -1,47 +1,26 @@
 import "./App.css";
-import { useQuery } from "@tanstack/react-query";
-
-interface  DataAPI{
-  answer:string,
-  forced:Boolean,
-  image:string
-}
+import { useRandom } from "./hooks/useRandom";
 
 
-const getCryptoNumber = async (): Promise<DataAPI> => {
-  const resp = await fetch(
-    "https://yesno.wtf/api",
-  ).then((resp) => resp.json());
-  console.log("resp", resp);
-  return resp;
-};
 function App() {
-  const {
-    isLoading,
-    isError,
-    data,
-    error,
-    refetch,
-    isFetching
-  } = useQuery({
-    queryKey: ["randomNumber"],
-    queryFn: getCryptoNumber,
-  });
 
-  if (isLoading || isFetching) {
+  const {randomQuery} = useRandom();
+
+
+  if (randomQuery.isLoading) {
     return <h1>Cargando</h1>;
   }
-  if (isError) {
-    return <h1>Ocurrio un error::{error.message}</h1>;
+  if (randomQuery.isError) {
+    return <h1>Ocurrio un error::{randomQuery.error.message}</h1>;
   }
 
   return (
     <>
       <h1>Hola Mundo</h1>
-      <h3>answer: {data?.answer}</h3>
-      <h3>{`forced: ${data?.forced ? 'NO' : 'NO'}`}</h3>
-      <img src={data?.image ? data.image : " " }/>
-      <button onClick={()=>refetch()}>
+      <h3>answer: {randomQuery.data?.answer}</h3>
+      <h3>{`forced: ${randomQuery.data?.forced ? 'NO' : 'NO'}`}</h3>
+      <img src={randomQuery.data?.image ? randomQuery.data.image : " " }/>
+      <button onClick={()=>randomQuery.refetch()}>
         Refrescar
       </button>
     </>
