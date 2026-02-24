@@ -6,7 +6,18 @@ export const useLabel = () => {
   const labelsQuery = useQuery({
     queryKey: ["labels"],
     queryFn: getLabels,
-    staleTime:HOUR
+    staleTime: HOUR,
+    placeholderData: [
+      {
+        id: 791921801,
+        node_id: "MDU6TGFiZWw3OTE5MjE4MDE=",
+        url: "https://api.github.com/repos/facebook/react/labels/%E2%9D%A4%EF%B8%8F",
+        name: "❤️",
+        color: "ffffff",
+        default: false,
+        description: null,
+      },
+    ],
   });
   return {
     labelsQuery,
